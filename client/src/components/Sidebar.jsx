@@ -10,14 +10,11 @@ export default function Sidebar({ children }) {
     return (
         <>
             <aside 
-                className="transition-all duration-300 ease-in-out transition-all duration-300 ease-in-out sticky top-0 "
+                className="transition-all duration-300 ease-in-out transition-all duration-300 ease-in-out sticky top-14 "
                 onMouseEnter={() => setExpanded(true)} 
                 onMouseLeave={() => setExpanded(false)}
             >
-                <nav className={` h-[calc(100lvh-56px)] flex flex-col bg-white border-r shadow-sm ${expanded ? "w-64" : "w-12"}`}> {/* Conditional width */}
-                    {/*<div className="p-4 pb-2 flex justify-between items-center">
-                        <img src={"/logo.png"} className={`overflow-hidden transition-all ${expanded ? "w-15 h-8 hover:-translate-y--1 hover:scale-110" : "w-0"}`} />
-    </div>*/}
+                <nav className={` h-[calc(100lvh-56px)] flex flex-col bg-white shadow-sm ${expanded ? "w-64" : "w-12"}`}> {/* Conditional width */}
 
                     <SidebarContext.Provider value={{ expanded }}>
                         <ul className="flex-1  ">{children}</ul>

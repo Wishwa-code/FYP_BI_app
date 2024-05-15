@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { RocketOutlined, MenuOutlined, AreaChartOutlined, GlobalOutlined, DollarCircleOutlined, UserOutlined, BookOutlined, LogoutOutlined } from '@ant-design/icons';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid';
+import { Settings } from "lucide-react";
+import Sidebar, { SidebarItem } from "../../components/Sidebar"
 
-// Example video data
+
+
 const videoData = [
     { 
         id: 1, 
@@ -158,12 +160,8 @@ const Lessons = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [videosPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState('');
-    const [menuOpen, setMenuOpen] = useState(false);
     const [userName, setUserName] = useState('');
-
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const indexOfLastVideo = currentPage * videosPerPage;
     const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
@@ -191,109 +189,135 @@ const Lessons = () => {
         window.location.href = '/login'; 
     };
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+      }
+
     return (
         <>
-        <div className="bg-indigo-50">
-            <div class="justify-center pt-1 bg-teal-950">
-              <h2 class="text-amber-500 text-xl font-bold place-self-center mt-2">Find Buyers</h2>
-            </div>
-            <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-indigo-50 transition duration-300 ease-in-out transform ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <div className="flex items-center justify-between p-4">
-          <a href="/home">
-            <img src="/logo.png" alt="Your Company Logo" className="w-15 h-8 hover:-translate-y--1 hover:scale-110" />
-          </a>
-            <button className=" text-neutral-800 focus:outline-none" onClick={toggleMenu}>
-              <MenuOutlined />
-            </button>
-          </div>
-          <nav className="p-4">
-            <ul className="space-y-4">
-            <li><Link to="/identify" className=" text-neutral-800 bg-rounded-lg px-3 py-2 flex indent-4 hover:font-medium items-center   font-sans"><AreaChartOutlined /> Market Predictions</Link></li>
-            <li><Link to="/worldwide-news" className="text-neutral-800 flex items-center indent-4 px-3 p3-2 hover:font-medium"><GlobalOutlined /> Worldwide News</Link></li>
-            <li><Link to="/find-buyers" className="text-neutral-800 flex items-center indent-4 px-3 p3-2 hover:font-medium" ><UserOutlined /> Find Buyers</Link></li>
-            <li><Link to="/lessions" className=" text-white bg-teal-950 px-6 py-2 flex items-center indent-4 hover:font-medium px-3 py-2 font-medium"><BookOutlined /> Find Lessons</Link></li>
-            <li><Link to="/escrow" className=" text-neutral-800 flex items-center indent-4 px-3 py-2 hover:font-medium"><DollarCircleOutlined /> Go to Escrow</Link></li>
-            <li><Link to="/home" className="border-opacity-30 animate-pulse border-amber-500 rounded-lg border-2 border-dashed text-amber-500 flex items-center indent-4 px-3 py-2 hover:font-medium " ><RocketOutlined /> C2W Premium</Link></li>
-            </ul>
-          </nav>
-        </div>
+    <div className=" h-screen flex-col">
+          <header className="z-10 bg-teal-950 sticky top-0">
+            <div className="flex justify-between  px-4 py-2 border-b ">
+              <div class="justify-center pt-1">
+                <img src="/logo.png" alt="Your Company Logo" className="w-18 h-6  mt-1" />
+              </div> 
 
-        
-          <header className="bg-teal-950 shadow">
-            <div className="flex justify-between items-center px-4 py-2 border-b">
-              <button className="text-white focus:outline-none hover:text-amber-500" onClick={toggleMenu}>
-                <MenuOutlined />
-              </button>
+
               <div className="flex items-center">
-                <div className="text-sm font-medium text-white mr-4">{userName}</div>
-                <button onClick={handleLogout} className="flex items-center text-white hover:text-amber-500">
-                  <LogoutOutlined className="mr-2" /> Logout
+              <button
+                
+                className="text-white focus:outline-none rounded-lg p-2 hover:text-amber-500 flex items-center" // Tailwind classes
+              >
+                <QuestionMarkCircleIcon className="h-6 w-6 mr-2" /> {/* Icon (optional) */}
+              </button>
+                
+                <button 
+                  id="dropdownInformationButton" 
+                  data-dropdown-toggle="dropdownInformation" 
+                  class="text-white font-medium text-center inline-flex " 
+                  type="button"
+                  aria-expanded="false" 
+                  aria-haspopup="true"
+                  onClick={toggleDropdown}
+                >
+              
+                  <img src="/userprofile.png" alt="Your Company Logo" className="mt-1 size-8" />
                 </button>
+                <div id="dropdownInformation" className={`absolute right-0 mt-72 mr-4 ${isDropdownOpen ? '' : 'hidden'} bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}>
+                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg">
+                      <a href="#" class="block px-4 py-2 ">
+                        <div>{userName}</div>
+                        <div class="font-medium truncate">wishwajayanath@gmail.com</div>
+                    </a>
+                      
+                    </div>
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
+                      <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Recommendations</a>
+                      </li>
+                      <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Messages</a>
+                      </li>
+                      <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                      </li>
+                    </ul>
+                    <div class="py-2">
+                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-white">
+                        <button onClick={handleLogout} className="">
+                          <LogoutOutlined className="mr-2" /> Sign out
+                        </button>
+                      </a>
+                    </div>
+                </div>
               </div>
             </div>
           </header>
-            <div className='container mx-auto px-4 sm:px-6 lg:px-8 mb-8'>
-                <h1 className="text-2xl font-bold my-4"></h1>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search by description..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        className="border border-gray-300 focus:border-blue-500 rounded-md py-2 px-4 w-full transition duration-300"
-                    />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {currentVideos.map(video => (
-                        <div key={video.id} className="bg-white  shadow-md rounded-lg transition duration-300 hover:shadow-lg">
-                            <a href={video.url} target="_blank" rel="noopener noreferrer">
-                                <img src={video.thumbnail} alt="Thumbnail" className="w-full rounded mb-2 h-auto" />
-                            </a>
-                            <h2 className="text-lg text-left mb-2 pl-6 pr-6">
-                                <a href={video.url} target="_blank" rel="noopener noreferrer" className="text-teal-950 font-medium text-lg mb-2 text-left leading-5.5">{video.title}</a>
-                            </h2>
-                            <p className="text-teal-950 font-light text-base mb-2 text-justify leading-5.5 mb-2 pl-6 pr-6">{video.description}</p>
-                            <p className="text-base pb-4 align-baseline">
-                                <a href={video.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-amber-500 hover:text-teal-950">
-                                    Start Learning
-                            </a>
-                </p>
+          <main className="flex-1  ">
+            <div className="flex flex-col h-[calc(100lvh-56px)]">  
+                        <div className="flex flex-row ">
+                          <div className="top-14 left-0 right-0 text-left indent-2">
+                            <Sidebar>
+                              <SidebarItem icon={<AreaChartOutlined />} text="Predictions" alert to="/identify"/>
+                              <SidebarItem icon={<GlobalOutlined />} text="News"  to="/worldwide-news" />
+                              <SidebarItem icon={<UserOutlined />} text="Buyers" alert to="/find-buyers"/>
+                              <SidebarItem icon={<BookOutlined />} text="Lessons" to="/lessions"/>
+                              <SidebarItem icon={<DollarCircleOutlined />} text="Escrow" to="/escrow"/>
+                              <SidebarItem icon={<RocketOutlined />} text="Premium" to="/home"/>
+                              <hr className="my-3"/>
+                              <SidebarItem icon={<Settings size={20} />} text="Settings"/>
+                            </Sidebar>
+                          </div>
+                          
+                          <div className="flex flex-col bg-indigo-50">
+                            <div className='container mx-auto px-4 sm:px-6 lg:px-8 mb-8'>
+                                <h1 className="text-2xl font-bold my-4"></h1>
+                                <div className="mb-4">
+                                    <input
+                                        type="text"
+                                        placeholder="Search by description..."
+                                        value={searchTerm}
+                                        onChange={handleSearch}
+                                        className="border border-gray-300 focus:border-blue-500 rounded-md py-2 px-4 w-full transition duration-300"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {currentVideos.map(video => (
+                                        <div key={video.id} className="bg-white  shadow-md rounded-lg transition duration-300 hover:shadow-lg">
+                                            <a href={video.url} target="_blank" rel="noopener noreferrer">
+                                                <img src={video.thumbnail} alt="Thumbnail" className="w-full rounded mb-2 h-auto" />
+                                            </a>
+                                            <h2 className="text-lg text-left mb-2 pl-6 pr-6">
+                                                <a href={video.url} target="_blank" rel="noopener noreferrer" className="text-teal-950 font-medium text-lg mb-2 text-left leading-5.5">{video.title}</a>
+                                            </h2>
+                                            <p className="text-teal-950 font-light text-base mb-2 text-justify leading-5.5 mb-2 pl-6 pr-6">{video.description}</p>
+                                            <p className="text-base pb-4 align-baseline">
+                                                <a href={video.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-amber-500 hover:text-teal-950">
+                                                    Start Learning
+                                            </a>
+                                </p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Pagination videosPerPage={videosPerPage} totalVideos={filteredVideos.length} paginate={paginate} />
+                            </div>
+                                
+                          </div>
+                          
+                          
                         </div>
-                    ))}
-                </div>
-                <Pagination videosPerPage={videosPerPage} totalVideos={filteredVideos.length} paginate={paginate} />
-            </div>
-            <footer class="bg-indigo-50 rounded-lg shadow bg-teal-950 m-4">
-        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8 rounded-lg bg-teal-950">
-          <div class="sm:flex sm:items-center sm:justify-between">
-              <a href="/home" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse bg-white ml-5 py-3 px-3 pr-2 rounded-lg bg-opacity-85">
-                <img src="/logo.png" class="h-8" alt="Flowbite Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
-              </a> 
-            <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-white-500 sm:mb-0 dark:text-gray-400">
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Predict Markets</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Find Global News</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Find Buyers</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline">Contact</a>
-                </li>
-            </ul>
-          </div>
-          <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-          <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="/home" class="hover:underline">C2W™</a>. All Rights Reserved.</span>
-        </div>
-        </footer>
-            </div>
-        </>
+                        <footer class="text-sm text-gray-500 bg-indigo-50 pb-2">
+                                 © 2024 C2W™
+                                 | <a href="/home" class="hover:underline text-amber-500">C2W home</a>
+                                 | <a href="/home" class="hover:underline text-amber-500">Terms of Service</a>
+                                 | <a href="/home" class="hover:underline text-amber-500">Privacy Policy</a>
+                                 | <a href="/home" class="hover:underline">Send feedback</a>
+                            </footer>
+                      </div>          
+                        
+          </main>          
+      </div>
+    </>
     );
 };
 
